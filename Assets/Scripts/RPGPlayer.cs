@@ -21,8 +21,16 @@ public class RPGPlayer : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Debug.Log($"[GAME OVER] {PlayerName} has fallen in battle!");
+
+            this.enabled = false;
+            Debug.Log($"[SYSTEM] {PlayerName} script has been disabled.");
         }
-        
-        
+    }
+
+    public void DisablePlayerScript() 
+    {
+
+        this.enabled = false;
+        Debug.Log($"[SYSTEM] Battle Won! {PlayerName} script has been disabled.");
     }
 }

@@ -44,7 +44,7 @@ public class CombatTester : MonoBehaviour
             if (goblinTarget != null) goblinTarget.InstaKill();
             if (dragonTarget != null) dragonTarget.InstaKill();
 
-            isPlayerTurn = false;
+            CheckVictoryCondition();
             return;
         }
 
@@ -80,16 +80,49 @@ public class CombatTester : MonoBehaviour
         public void ExecuteEnemyTurn() 
         {
             
+            if (CheckVictoryCondition()) return;
+
             Debug.Log("--- Enemy Turn ---");
 
             if (goblinTarget != null) goblinTarget.PerformAttack(player);
             if (dragonTarget != null) dragonTarget.PerformAttack(player);
 
-            if (player != null && player.CurrentHealth > 0) 
+            if (player == null || player.CurrentHealth <= 0) 
             {
-                isPlayerTurn = true;
-                Debug.Log("=== Your turn!");
+                isBattleOver = true;
+                Debug.Log("=== YOU LOSE! Press [4] to retry. ===");
+                return;
+
             }
+
+            isPlayerTurn = true;
+            Debug.Log("=== Your turn ===");
+        }
+
+        private bool CheckVictoryCondition() 
+        {
+            
+            bool isGoblinDefeated = (goblinTarget == null || goblinTarget.CurrentHealth <= 0);
+            bool isDragonDefeated = (dragonTarget == null || dragonTarget.CurrentHealth <= 0);
+
+            if (isGoblinDefeated && isDragonDefeated) 
+            {
+
+                isBattleOver = true;
+                isPlayerTurn = false;
+
+                if (player != null) player.DisablePlayerScript();
+
+                Debug.Log("=========================");
+                Debug.Log("You win!");
+                Debug.Log("=========================");
+                Debug.Log("Press [4] to play again.");
+                return true;
+
+
+
+            }
+            return false;
         }
    
 
