@@ -21,16 +21,24 @@ public class RPGPlayer : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Debug.Log($"[GAME OVER] {PlayerName} has fallen in battle!");
-
-            this.enabled = false;
-            Debug.Log($"[SYSTEM] {PlayerName} script has been disabled.");
+            HandleDisappearance();
         }
     }
 
     public void DisablePlayerScript() 
     {
 
+        
+        Debug.Log($"[SYSTEM] Battle Won! {PlayerName} is leaving the battlefield.");
+        HandleDisappearance();
+    }
+
+    private void HandleDisappearance() 
+    {
+
+        MeshRenderer mesh = GetComponent<MeshRenderer>();
+        if (mesh != null) mesh.enabled = false;
+
         this.enabled = false;
-        Debug.Log($"[SYSTEM] Battle Won! {PlayerName} script has been disabled.");
     }
 }
